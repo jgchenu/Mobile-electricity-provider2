@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "koa": "^2.5.1",
+    "mysql": "^2.15.0",
+    "mysql2": "^1.5.3",
+    "sequelize": "^4.38.0"
+  }
+}
