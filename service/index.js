@@ -5,7 +5,7 @@ const model = require('./model');
   const User = model.user;
 
   let oneUser = await User.create({
-    userName: 'jgchen',
+    userName: 'jgchen1',
     password: '123456'
   },()=>{
     console.log("插入成功了")
@@ -21,4 +21,4 @@ app.use(async (ctx) => {
 })
 app.listen(3000, () => {
   console.log('listen 3000')
-})
+}) 
