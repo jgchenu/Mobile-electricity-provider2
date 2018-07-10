@@ -7,8 +7,8 @@ module.exports = sequelize.define('user', {
   },
   userName: Sequelize.STRING(255),
   password: Sequelize.STRING(255),
-  createAt: Sequelize.DATE(),
-  lastLoginAt: Sequelize.DATE()
+  createAt: Sequelize.BIGINT(),
+  lastLoginAt: Sequelize.BIGINT()
 }, {
   timestamps: false,
   freezeTableName: true
