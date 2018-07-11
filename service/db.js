@@ -11,9 +11,5 @@ var sequelize = new Sequelize(config.database, config.username, config.password,
     idle: 5000
   }
 });
- if (process.env.NODE_ENV !== 'production') {
-   sequelize.sync({
-     force: false
-   });
- }
+
 module.exports = sequelize
