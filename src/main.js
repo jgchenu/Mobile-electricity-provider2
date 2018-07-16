@@ -12,10 +12,12 @@ import {
   Swipe,
   SwipeItem,
   Lazyload,
-  List
+  List,
+  Field,
+  NavBar
 }
 from 'vant'
-Vue.use(Button).use(Row).use(Col).use(Swipe).use(SwipeItem).use(Lazyload).use(List)
+Vue.use(Field).use(NavBar).use(Button).use(Row).use(Col).use(Swipe).use(SwipeItem).use(Lazyload).use(List)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

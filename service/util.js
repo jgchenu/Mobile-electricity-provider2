@@ -10,7 +10,6 @@ exports.addSalt = (val) => {
         if (err) {
           resolve(val);
         }
-        console.log("resolve");
         resolve(hash);
       });
     });
