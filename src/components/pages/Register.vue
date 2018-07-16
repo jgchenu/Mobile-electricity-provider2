@@ -13,6 +13,7 @@
 
 <script>
 import url from "../../serviceAPI.config.js";
+import { Toast } from "vant";
 export default {
   data() {
     return {
@@ -35,6 +36,12 @@ export default {
       })
         .then(res => {
           console.log(res);
+          if (res.data.code === 200) {
+            Toast.success(res.data.message);
+          } else {
+            console.log(res.data.message);
+            Toast.fail("注册失败");
+          }
         })
         .catch(err => {
           console.log(err);
