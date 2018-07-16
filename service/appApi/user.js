@@ -1,7 +1,8 @@
 const Router = require('koa-router')
 const model = require('../model');
 const {
-  addSalt
+  addSalt,
+  comparePassword
 } = require('../util.js');
 let router = new Router()
 router.get('/', async (ctx) => {
@@ -27,6 +28,47 @@ router.post('/register', async (ctx) => {
       message: err
     }
   });
+
+})
+router.post('/login', async (ctx) => {
+  let loginUser = ctx.request.body;
+  console.log(loginUser)
+  let userName = loginUser.userName;
+  let password = loginUser.password;
+  //引入user的model
+  const User = model.user;
+  await User.findOne({
+    where: {
+      userName: userName
+    }
+  }).then(async (result) => {
+    console.log(JSON.stringify(result))
+    if (result) {
+      await comparePassword(password, result.password).then(isMatch => {
+        ctx.body = {
+          code: 200,
+          message: isMatch ? '登录成功' : '密码错误'
+        }
+      }).catch(err => {
+        console.log(err)
+        ctx.body = {
+          code: 500,
+          message: err
+        }
+      })
+    } else {
+      ctx.body = {
+        code: 200,
+        message: '用户名不存在'
+      }
+    }
+  }).catch(err => {
+    console.log(err)
+    ctx.body = {
+      code: 500,
+      message: err
+    }
+  })
 
 })
 module.exports = router;

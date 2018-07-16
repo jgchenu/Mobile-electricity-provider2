@@ -15,3 +15,14 @@ exports.addSalt = (val) => {
     });
   });
 }
+exports.comparePassword = (_password, password) => {
+  return new Promise(resolve => {
+    bcrypt.compare(_password, password, (err, isMatch) => {
+      if (!err) {
+        resolve(isMatch)
+      } else {
+        reject(err)
+      }
+    })
+  })
+}

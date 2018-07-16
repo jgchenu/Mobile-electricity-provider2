@@ -1,11 +1,11 @@
 <template>
-    <div class="register">
-        <van-nav-bar title='用户注册' left-text='返回' left-arrow @click-left='goBack' />
+    <div class="login">
+        <van-nav-bar title='用户登录' left-text='返回' left-arrow @click-left='goBack' />
         <div class="register-panel">
             <van-field v-model="userName" label='用户名' icon='clear' placeholder='请输入用户名' required @click-icon='userName=""' :error-message='userNameErrorMsg'/>
             <van-field v-model="password" label='密码' type='password' placeholder='请输入密码' required  :error-message='passwordErrorMsg'/>
             <div class="register-button">
-                <van-button size='large' type='primary' @click="registerAction" :loading="openLoading">马上注册</van-button>
+                <van-button size='large' type='primary' @click="loginAction" :loading="openLoading">马上登录</van-button>
             </div>
         </div>
     </div>
@@ -28,10 +28,10 @@ export default {
     goBack() {
       this.$router.go(-1);
     },
-    axiosRegisterUser() {
+    axiosLoginUser() {
       this.openLoading = true;
       this.$axios({
-        url: url.registerUser,
+        url: url.login,
         method: "post",
         data: {
           userName: this.userName,
@@ -40,19 +40,13 @@ export default {
       })
         .then(res => {
           console.log(res);
-          if (res.data.code === 200) {
-            Toast.success(res.data.message);
-            this.$router.push("/");
-          } else {
-            console.log(res.data.message);
-            this.openLoading = false;
-            Toast.fail("注册失败");
-          }
+          Toast.success(res.data.message);
+          this.openLoading = false;
         })
         .catch(err => {
           console.log(err);
           this.openLoading = false;
-          Toast.fail("注册失败");
+          Toast.fail("登录失败");
         });
     },
     //表单验证方法
@@ -72,8 +66,8 @@ export default {
       }
       return isOk;
     },
-    registerAction() {
-      this.checkForm() && this.axiosRegisterUser();
+    loginAction() {
+      this.checkForm() && this.axiosLoginUser();
     }
   }
 };
