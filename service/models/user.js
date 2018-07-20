@@ -7,7 +7,10 @@ module.exports = sequelize.define(
       type: Sequelize.INTEGER(11),
       primaryKey: true
     },
-    userName: Sequelize.STRING(255),
+    userName: {
+      type:Sequelize.STRING(255),
+      unique: true
+    },
     password: {
       type: Sequelize.STRING(255),
       allowNull: false,
