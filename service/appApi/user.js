@@ -14,9 +14,7 @@ router.post('/register', async (ctx) => {
   let saltPassword = await addSalt(ctx.request.body.password);
   await User.create({
     userName: ctx.request.body.userName,
-    password: saltPassword,
-    createAt: Date.now(),
-    lastLoginAt: Date.now()
+    password: saltPassword
   }).then(() => {
     ctx.body = {
       code: 200,

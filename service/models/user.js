@@ -8,15 +8,21 @@ module.exports = sequelize.define(
       primaryKey: true
     },
     userName: {
-      type:Sequelize.STRING(255),
+      type: Sequelize.STRING(255),
       unique: true
     },
     password: {
       type: Sequelize.STRING(255),
       allowNull: false,
     },
-    createAt: Sequelize.BIGINT(),
-    lastLoginAt: Sequelize.BIGINT()
+    createAt: {
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW
+    },
+    lastLoginAt: {
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW
+    },
   }, {
     timestamps: false,
     freezeTableName: true
