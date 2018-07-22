@@ -9,7 +9,8 @@ module.exports = sequelize.define(
     },
     userName: {
       type: Sequelize.STRING(255),
-      unique: true
+      unique: true,
+      primaryKey: true
     },
     password: {
       type: Sequelize.STRING(255),
