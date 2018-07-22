@@ -1,14 +1,15 @@
 const Router = require("koa-router");
 const router = new Router();
 const model = require('../model')
-router.get("/insertAllGoodsInfo", async ctx => {
-  fs.readFile("../data/dataJson/goods.json", "utf-8", function (err, data) {
+const fs=require('fs')
+router.get("/insertAllGoodsInfo", async (ctx) => {
+  fs.readFile("./dataJson/goods.json", "utf-8", function (err, data) {
     data = JSON.parse(data)
     let saveCount = 0;
     const Goods = model.goods;
-    data.map((value, index) => {
+    data.RECORDS.map((value, index) => {
       console.log(value)
-      await Goods.create(value).then(() => {
+       Goods.create(value).then(() => {
         saveCount++
         console.log('成功' + saveCount)
       }).catch((err) => {
@@ -16,5 +17,6 @@ router.get("/insertAllGoodsInfo", async ctx => {
       });
     })
   });
+  ctx.body = '开始导入'
 });
 module.exports = router
