@@ -11,7 +11,7 @@ module.exports = sequelize.define(
     MALL_CATEGORY_NAME: Sequelize.STRING(),
     IMAGE: Sequelize.STRING(),
     TYPE: Sequelize.INTEGER(),
-    SORT: Sequelize.INTERGER(),
+    SORT: Sequelize.INTEGER(),
     COMMENTS: Sequelize.STRING()
   },
   {
