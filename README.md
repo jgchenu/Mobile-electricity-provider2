@@ -1,7 +1,8 @@
-# electricity-provider2
+# Vue.js+Koa2+Seq+mysql移动电商
 
-> A Vue.js project
-
+> A Vue.js project 根据mongodb实战视频改写
+> 前端技术栈:vue+移动端rem适配方案
+> 后端技术栈:koa2+Seq+mysql
 ## Build Setup
 
 ``` bash

@@ -51,6 +51,6 @@ router.get('/insertAllcategorySub', async (ctx) => {
       })
     })
   })
-  ctx.body='开始导入'
+  ctx.body = '开始导入'
 })
 module.exports = router
