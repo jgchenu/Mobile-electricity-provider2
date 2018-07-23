@@ -45,7 +45,7 @@ router.post('/login', async (ctx) => {
       await comparePassword(password, result.password).then(isMatch => {
         ctx.body = {
           code: 200,
-          message: isMatch ? '登录成功' : '密码错误'
+          message: isMatch
         }
       }).catch(err => {
         console.log(err)

@@ -24,6 +24,12 @@ export default {
       passwordErrorMsg: "" //当密码出现错误时的提示信息
     };
   },
+  created(){
+    if (localStorage.userInfo) {
+      Toast.success('你已经登录过了')
+      this.$router.push('/')
+    }
+  },
   methods: {
     goBack() {
       this.$router.go(-1);
@@ -40,8 +46,25 @@ export default {
       })
         .then(res => {
           console.log(res);
-          Toast.success(res.data.message);
-          this.openLoading = false;
+          if (res.data.code === 200 && res.data.message) {
+            new Promise((resolve, reject) => {
+              localStorage.userInfo = { userName: this.userName };
+              setTimeout(() => {
+                resolve();
+              }, 500);
+              Toast.success("登录成功");
+            })
+              .then(() => {
+                this.$router.push("/");
+              })
+              .catch(err => {
+                Toast.fail("登录状态保存失败");
+                console.log(err);
+              });
+          } else {
+            Toast.fail("登录失败");
+            this.openLoading = false;
+          }
         })
         .catch(err => {
           console.log(err);
