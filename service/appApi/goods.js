@@ -82,4 +82,61 @@ router.post("/getDetailGoodsInfo", async ctx => {
     };
   }
 });
+router.get('/getCategoryList', async (ctx) => {
+  try {
+    const Category = model.category;
+    let result = await Category.findAll();
+    ctx.body = {
+      code: 200,
+      message: result
+    }
+  } catch (err) {
+    ctx.body = {
+      code: 500,
+      message: err
+    }
+  }
+})
+router.post('/getCategorySubList', async (ctx) => {
+  try {
+    let categoryId = ctx.request.body.categoryId;
+    const CategorySub = model.categorySub;
+    let result = await CategorySub.findAll({
+      where: {
+        MALL_CATEGORY_ID: categoryId
+      }
+    })
+    ctx.body = {
+      code: 200,
+      message: result
+    }
+  } catch (err) {
+    ctx.body = {
+      code: 500,
+      message: err
+    }
+  }
+})
+router.get('/getGoodsListByCategorySubId', async (ctx) => {
+  try {
+    let categorySubId = ctx.request.body.categorySubId;
+    categorySubId = '2c9f6c946016ea9b016016f79c8e0000';
+    const Goods = model.goods;
+    let result = await Goods.findAll({
+      where: {
+        SUB_ID: categorySubId
+      }
+    })
+    ctx.body = {
+      code: 200,
+      message: result
+    }
+
+  } catch (err) {
+    ctx.body = {
+      code: 500,
+      message: err
+    }
+  }
+})
 module.exports = router;
