@@ -8,7 +8,7 @@ var sequelize = new Sequelize(config.database, config.username, config.password,
   pool: {
     max: 5,
     min: 0,
-    idle: 8000
+    acquire: 300000
   }
 });
 
