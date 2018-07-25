@@ -14,14 +14,22 @@
                 </van-col>
                 <van-col span="18">
                     <div class="categorySub">
-                        <van-tabs v-model="active">
-                            <van-tab v-for="(item,index) in categorySub" :key="index" :title="item.MALL_SUB_NAME"></van-tab>
+                        <van-tabs v-model="active" @click="onClickCategorySub">
+                            <van-tab v-for="(item,index) in categorySub" :key="index" :title="item.MALL_SUB_NAME" ></van-tab>
                         </van-tabs>
                     </div>
                     <div id="list">
                         <van-pull-refresh v-model="isRefresh" @refresh="onRefresh">
                         <van-list v-model="loading" :finished="finished" @load="loadMore">
-                            <div class="listItem" v-for="item in list" :key="item">{{item}}</div>
+                            <div class="listItem" v-for="(item,index) in goodList" :key="index">
+                              <div class="listItemImage">
+                                <img :src="item.IMAGE1" alt="商品图片" width="100%">
+                              </div>
+                              <div class="listItemText">
+                                <div>{{item.NAME}}</div>
+                                <div>￥{{item.ORI_PRICE}}</div>
+                              </div>
+                            </div>
                         </van-list>
                         </van-pull-refresh>
                     </div>
@@ -53,8 +61,10 @@ export default {
       active: 0, //激活标签,
       loading: false,
       finished: false, //上拉加载是否有数据
-      list: [],
-      isRefresh: false //下拉刷新
+      isRefresh: false, //下拉刷新
+      page: 1, //商品列表的页数
+      goodList: [], //商品信息
+      categorySubId: "" //商品子分类ID
     };
   },
   methods: {
@@ -64,7 +74,7 @@ export default {
         method: "get"
       })
         .then(res => {
-          console.log(res);
+          console.log("category:", res);
           if (res.data.code === 200 && res.data.message) {
             this.category = res.data.message;
             this.getCategorySubList(this.category[0].ID);
@@ -78,6 +88,9 @@ export default {
     },
     clickCategory(index, categoryId) {
       this.categoryIndex = index;
+      this.page = 1;
+      this.finished = false;
+      this.goodList = [];
       this.getCategorySubList(categoryId);
     },
     getCategorySubList(categoryId) {
@@ -92,8 +105,44 @@ export default {
           if (res.data.code === 200 && res.data.message) {
             this.categorySub = res.data.message;
             this.active = 0;
-            console.log(res);
+            this.categorySubId = this.categorySub[0].ID;
+            console.log("categorySub:", res);
+            this.getGoodList();
           }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    onClickCategorySub(index, title) {
+      // console.log(index, this.categorySub);
+      this.categorySubId = this.categorySub[index].ID;
+      console.log(this.categorySubId);
+      this.goodList = [];
+      this.finished = false;
+      this.page = 1;
+      this.getGoodList();
+    },
+    getGoodList() {
+      this.$axios({
+        url: url.getGoodsListByCategorySubId,
+        method: "post",
+        data: {
+          categorySubId: this.categorySubId,
+          page: this.page
+        }
+      })
+        .then(res => {
+          // console.log('goodList:',res);
+          if (res.data.code === 200 && res.data.message.length) {
+            this.page++;
+            this.goodList = this.goodList.concat(res.data.message);
+            console.log("goodList:", this.goodList);
+          } else {
+            this.finished = true;
+          }
+          this.loading = false;
+          // console.log(this.finished);
         })
         .catch(err => {
           console.log(err);
@@ -101,21 +150,19 @@ export default {
     },
     loadMore() {
       setTimeout(() => {
-        for (let index = 0; index < 10; index++) {
-          this.list.push(this.list.length + 1);
-        }
-        this.loading = false;
-        if (this.list.length >= 40) {
-          this.finished = true;
-        }
+        this.categorySubId = this.categorySubId
+          ? this.categorySubId
+          : this.categorySub[0].ID;
+        this.getGoodList();
       }, 500);
     },
     onRefresh() {
       setTimeout(() => {
         this.isRefresh = false;
         this.finished = false;
-        this.list = [];
-        this.loadMore();
+        this.goodList = [];
+        this.page = 1;
+        this.getGoodList();
       }, 500);
     }
   }
@@ -143,10 +190,20 @@ export default {
   #list {
     overflow: scroll;
     .listItem {
-      text-align: center;
-      line-height: 80px;
+      display: flex;
+      flex-direction: row;
+      font-size: 0.8rem;
       border-bottom: 1px solid #f0f0f0;
-      background: #fff;
+      background-color: #ffffff;
+      padding: 5px;
+      .listItemImage {
+        flex: 8;
+      }
+      .listItemText {
+        flex: 16;
+        margin-top: 10px;
+        margin-left: 10px;
+      }
     }
   }
 }

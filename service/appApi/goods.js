@@ -117,15 +117,19 @@ router.post('/getCategorySubList', async (ctx) => {
     }
   }
 })
-router.get('/getGoodsListByCategorySubId', async (ctx) => {
+router.post('/getGoodsListByCategorySubId', async (ctx) => {
   try {
     let categorySubId = ctx.request.body.categorySubId;
-    categorySubId = '2c9f6c946016ea9b016016f79c8e0000';
+    let page = ctx.request.body.page;
+    let num = 10;
+    let start = (page - 1) * num
     const Goods = model.goods;
     let result = await Goods.findAll({
       where: {
         SUB_ID: categorySubId
-      }
+      },
+      offset: start,
+      limit: num
     })
     ctx.body = {
       code: 200,
