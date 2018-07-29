@@ -23,7 +23,7 @@
                         <van-list v-model="loading" :finished="finished" @load="loadMore">
                             <div class="listItem" v-for="(item,index) in goodList" :key="index">
                               <div class="listItemImage">
-                                <img :src="item.IMAGE1" alt="商品图片" width="100%">
+                                <img :src="item.IMAGE1" alt="商品图片" width="100%" :onerror="errorImg">
                               </div>
                               <div class="listItemText">
                                 <div>{{item.NAME}}</div>
@@ -64,7 +64,8 @@ export default {
       isRefresh: false, //下拉刷新
       page: 1, //商品列表的页数
       goodList: [], //商品信息
-      categorySubId: "" //商品子分类ID
+      categorySubId: "", //商品子分类ID
+      errorImg: 'this.src="' + require("@/assets/images/errorImg.jpg") + '"'
     };
   },
   methods: {
@@ -121,7 +122,7 @@ export default {
       this.goodList = [];
       this.finished = false;
       this.page = 1;
-      this.getGoodList();
+      this.loadMore();
     },
     getGoodList() {
       this.$axios({
@@ -154,7 +155,7 @@ export default {
           ? this.categorySubId
           : this.categorySub[0].ID;
         this.getGoodList();
-      }, 500);
+      }, 1000);
     },
     onRefresh() {
       setTimeout(() => {
@@ -162,7 +163,7 @@ export default {
         this.finished = false;
         this.goodList = [];
         this.page = 1;
-        this.getGoodList();
+        this.loadMore();
       }, 500);
     }
   }
