@@ -21,13 +21,13 @@
                     <div id="list">
                         <van-pull-refresh v-model="isRefresh" @refresh="onRefresh">
                         <van-list v-model="loading" :finished="finished" @load="loadMore">
-                            <div class="listItem" v-for="(item,index) in goodList" :key="index">
+                            <div class="listItem" v-for="(item,index) in goodList" :key="index" @click="goGoodsInfo(item.ID)">
                               <div class="listItemImage">
                                 <img :src="item.IMAGE1" alt="商品图片" width="100%" :onerror="errorImg">
                               </div>
                               <div class="listItemText">
                                 <div>{{item.NAME}}</div>
-                                <div>￥{{item.ORI_PRICE}}</div>
+                                <div>￥{{item.ORI_PRICE|moneyFilter}}</div>
                               </div>
                             </div>
                         </van-list>
@@ -43,6 +43,7 @@
 <script>
 import url from "@/serviceAPI.config.js";
 import { Toast } from "vant";
+import { toMoney } from "../filter/moneyFilter.js";
 
 export default {
   created() {
@@ -67,6 +68,11 @@ export default {
       categorySubId: "", //商品子分类ID
       errorImg: 'this.src="' + require("@/assets/images/errorImg.jpg") + '"'
     };
+  },
+  filters: {
+    moneyFilter(money) {
+      return toMoney(money);
+    }
   },
   methods: {
     getCategory() {
@@ -165,6 +171,10 @@ export default {
         this.page = 1;
         this.loadMore();
       }, 500);
+    },
+    //跳转到商品详情页
+    goGoodsInfo(id) {
+      this.$router.push({ path: "/goods", query: { goodId: id } });
     }
   }
 };
