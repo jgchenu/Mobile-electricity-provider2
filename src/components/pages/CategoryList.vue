@@ -51,8 +51,8 @@ export default {
   },
   mounted() {
     let winHeight = document.documentElement.clientHeight;
-    document.getElementById("leftNav").style.height = winHeight - 46 + "px";
-    document.getElementById("list").style.height = winHeight - 90 + "px";
+    document.getElementById("leftNav").style.height = winHeight - 46-50 + "px";
+    document.getElementById("list").style.height = winHeight - 90 -50+ "px";
   },
   data() {
     return {
@@ -174,7 +174,7 @@ export default {
     },
     //跳转到商品详情页
     goGoodsInfo(id) {
-      this.$router.push({ path: "/goods", query: { goodId: id } });
+      this.$router.push({ name: "Goods", query: { goodId: id } });
     }
   }
 };

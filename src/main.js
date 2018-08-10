@@ -6,6 +6,8 @@ import router from './router'
 import axios from 'axios'
 Vue.prototype.$axios = axios;
 import {
+  Tabbar,
+  TabbarItem,
   Button,
   Row,
   Col,
@@ -21,7 +23,7 @@ import {
   Stepper
 }
 from 'vant'
-Vue.use(Stepper).use(PullRefresh).use(Tab).use(Tabs).use(Field).use(NavBar).use(Button).use(Row).use(Col).use(Swipe).use(SwipeItem).use(Lazyload).use(List)
+Vue.use(Tabbar).use(TabbarItem).use(Stepper).use(PullRefresh).use(Tab).use(Tabs).use(Field).use(NavBar).use(Button).use(Row).use(Col).use(Swipe).use(SwipeItem).use(Lazyload).use(List)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

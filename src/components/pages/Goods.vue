@@ -93,7 +93,7 @@ export default {
       } else {
         Toast.success("已有此商品");
       }
-      this.$router.push({ path: "/cart" });
+      this.$router.push({ name: "Cart" });
     }
   },
   filters: {

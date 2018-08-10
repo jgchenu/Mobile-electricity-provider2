@@ -17,21 +17,47 @@
                         <van-stepper v-model="item.count" />
                     </div>
                 </van-col>
-                <van-col span='4'>
-                    <div class="price">￥{{item.price}}</div>
+                <van-col span='4' class="goodPrice">
+                    <div class="price">￥{{item.price|moneyFilter}}</div>
+                    <div class="count">
+                      x{{item.count}}
+                    </div>
+                    <div class="allPrice">
+                      ￥{{item.price*item.count|moneyFilter}}
+                    </div>
                 </van-col>
             </van-row>
+        </div>
+        <!-- 显示总金额 -->
+        <div class="totalMoney">
+          商品总价:￥{{totalMoney|moneyFilter}}
         </div>
     </div>
 </template>
 
 <script>
+import { toMoney } from "../filter/moneyFilter.js";
 export default {
   data() {
     return {
       cartInfo: [],
       isEmpty: false
     };
+  },
+  filters: {
+    moneyFilter(money) {
+      return toMoney(money);
+    }
+  },
+  computed: {
+    totalMoney() {
+      let allMoney = 0;
+      this.cartInfo.forEach((item, index) => {
+        allMoney += item.price * item.count;
+      });
+      localStorage.cartInfo=JSON.stringify(this.cartInfo);
+      return allMoney;
+    }
   },
   created() {
     this.getCartInfo();
@@ -72,8 +98,17 @@ export default {
   .control {
     margin-top: 20px;
   }
-  .price {
+  .goodPrice {
     text-align: right;
+    .allPrice {
+      color: red;
+    }
   }
+}
+.totalMoney {
+  text-align: right;
+  background-color: #fff;
+  border-bottom: 1px solid #e4e7ed;
+  padding: 5px;
 }
 </style>
